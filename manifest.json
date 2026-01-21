@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Bimboland Extension",
   "description": "Bimboland Tools",
   "version": "1.0.0",
@@ -7,7 +7,7 @@
     "128": "Bimboland_flag.png"
   },
 
-  "browser_action": {
+  "action": {
     "default_popup": "popup.html"
   },
 
@@ -27,10 +27,17 @@
   ],
 
   "background": {
-    "scripts": ["background.js"]
+    "service_worker": "background.js"
   },
 
-  "permissions": ["http://*/*", "https://*/*", "activeTab", "webNavigation", "*://*/*"],
+  "permissions": ["activeTab", "webNavigation", "storage"],
 
-  "web_accessible_resources": ["minigame.js", "fight.js"]
+  "host_permissions": ["<all_urls>"],
+
+  "web_accessible_resources": [
+    {
+      "resources": ["minigame.js", "fight.js"],
+      "matches": ["*://ximbo.land/*"]
+    }
+  ]
 }

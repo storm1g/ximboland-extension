@@ -7,8 +7,6 @@ const voteBtn = document.getElementById("vote");
     chrome.tabs.sendMessage(tabs[0].id, {greeting: "runMinigames"});
   });
 }); */
-var bg = chrome.extension.getBackgroundPage();
-
 function popup(msg) {
   chrome.tabs.query({currentWindow: true, active: true}, function (tabs){
   var activeTab = tabs[0];
@@ -27,7 +25,8 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 // Fight (Vote) button
   document.getElementById("fight").addEventListener("click", function(){
-    bg.broj = Number(document.getElementById("broj").value) - 1;
+    var brojVal = Number(document.getElementById("broj").value) - 1;
+    chrome.runtime.sendMessage({type: 'setBroj', broj: brojVal}, function(resp){});
     chrome.tabs.query({currentWindow: true, active: true}, function (tabs){
       var activeTab = tabs[0];
       chrome.tabs.sendMessage(activeTab.id, {"message": "fight"});
