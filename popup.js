@@ -25,12 +25,15 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 // Fight (Vote) button
   document.getElementById("fight").addEventListener("click", function(){
-    var brojVal = Number(document.getElementById("broj").value) - 1;
-    chrome.runtime.sendMessage({type: 'setBroj', broj: brojVal}, function(resp){});
+    var desired = Number(document.getElementById("broj").value) || 0;
     chrome.tabs.query({currentWindow: true, active: true}, function (tabs){
       var activeTab = tabs[0];
+      var url = (activeTab && activeTab.url) ? activeTab.url : '';
+      var isDetails = /\/fight\/details\//.test(url) || /\/debate\/details\//.test(url);
+      var brojVal = isDetails ? (desired - 1) : desired;
+      chrome.runtime.sendMessage({type: 'setBroj', broj: brojVal}, function(resp){});
       chrome.tabs.sendMessage(activeTab.id, {"message": "fight"});
-     });
+    });
   });
 });
 
